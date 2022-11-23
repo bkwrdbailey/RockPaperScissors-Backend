@@ -13,7 +13,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<ISessionService, SessionService>();
 builder.Services.AddScoped<IUserDatabaseCalls, UserDatabaseCalls>();
+builder.Services.AddScoped<ISessionDatabaseCalls, SessionDatabaseCalls>();
 
 builder.Services.AddDbContext<RockPaperScissorsDBContext>(option => option.UseSqlServer(builder.Configuration.GetConnectionString("RockPaperScissorsDB")));
 
