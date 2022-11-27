@@ -11,8 +11,8 @@ public class SessionController : ControllerBase
         _service = service;
     }
 
-    [HttpPost("Session/Create/{userId}")]
-    public async Task createSession(int userId)
+    [HttpPost("Session/Create")]
+    public async Task createSession([FromBody] int userId)
     {
         await _service.sessionCreation(userId);
     }
