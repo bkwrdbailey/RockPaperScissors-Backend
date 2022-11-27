@@ -3,7 +3,7 @@ using RockPaperScissorsBackend.Models;
 using RockPaperScissorsBackend.Services;
 
 [ApiController]
-public class SessionController
+public class SessionController : ControllerBase
 {
     private readonly ISessionService _service;
     public SessionController(ISessionService service)
