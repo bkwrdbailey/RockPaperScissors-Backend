@@ -12,7 +12,7 @@ public class SessionController : ControllerBase
     }
 
     [HttpPost("Session/Create/{userId}")]
-    public async Task createSession([FromBody] int userId)
+    public async Task createSession(int userId)
     {
         await _service.sessionCreation(userId);
     }
