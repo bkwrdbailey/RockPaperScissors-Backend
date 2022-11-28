@@ -6,5 +6,6 @@ public interface ISessionService
 {
     Task<bool> checkSessionExpiration(int userId);
     Task sessionCreation(int userId);
-    Task removeExpiredSession(UserSession sessionToRemove);
+    Task removeExpiredSessionViaId(int userId);
+    Task removeExpiredSessionViaRecord(UserSession sessionToRemove);
 }

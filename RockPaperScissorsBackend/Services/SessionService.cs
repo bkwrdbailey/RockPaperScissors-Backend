@@ -19,7 +19,7 @@ public class SessionService : ISessionService
         // Conditional to remove session record or update it based on whether time has expired or not
         if (DateTime.UtcNow > sessionRecord.expSessionTime)
         {
-            await removeExpiredSession(sessionRecord);
+            await removeExpiredSessionViaRecord(sessionRecord);
             return false;
         }
         else
@@ -34,16 +34,34 @@ public class SessionService : ISessionService
     // Acquire current date time for session record creation
     public async Task sessionCreation(int userId)
     {
-        UserSession newSession = new UserSession();
-        newSession.startSessionTime = DateTime.UtcNow;
-        newSession.expSessionTime = newSession.startSessionTime.AddMinutes(30); // Add 20 - 30 minutes
-        newSession.userId = userId;
+        UserSession userSession = await _db.getSessionRecord(userId);
 
-        await _db.createSessionRecord(newSession);
+        // Check if there is still an active session on record or not
+        if (userSession.id == 0)
+        {
+            UserSession newSession = new UserSession();
+            newSession.startSessionTime = DateTime.UtcNow;
+            newSession.expSessionTime = newSession.startSessionTime.AddMinutes(30); // Add 20 - 30 minutes
+            newSession.userId = userId;
+            await _db.createSessionRecord(newSession);
+        }
+        else
+        {
+            userSession.startSessionTime = DateTime.UtcNow;
+            userSession.expSessionTime = userSession.startSessionTime.AddMinutes(30);
+            await _db.updateSessionRecord(userSession);
+        }
     }
 
-    // Remove a session record once it has expired
-    public async Task removeExpiredSession(UserSession sessionToRemove)
+    // Remove a session record once it has expired via user id parameter
+    public async Task removeExpiredSessionViaId(int userId)
+    {
+        UserSession sessionToRemove = await _db.getSessionRecord(userId);
+        await _db.removeSessionRecord(sessionToRemove);
+    }
+
+    // Remove a session record once it has expired via UserSession object parameter
+    public async Task removeExpiredSessionViaRecord(UserSession sessionToRemove)
     {
         await _db.removeSessionRecord(sessionToRemove);
     }

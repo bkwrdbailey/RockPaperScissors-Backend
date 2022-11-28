@@ -22,4 +22,10 @@ public class SessionController : ControllerBase
     {
         return await _service.checkSessionExpiration(userId);
     }
+
+    [HttpDelete("Session/Remove/{userId}")]
+    public async Task removeSession(int userId)
+    {
+        await _service.removeExpiredSessionViaId(userId);
+    }
 }
