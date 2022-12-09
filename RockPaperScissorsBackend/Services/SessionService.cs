@@ -36,6 +36,8 @@ public class SessionService : ISessionService
     {
         UserSession userSession = await _db.getSessionRecord(userId);
 
+        Console.WriteLine(userSession);
+
         // Check if there is still an active session on record or not
         if (userSession.id == 0)
         {
